@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <main class="w-screen h-screen bg-black flex flex-col">
+
+    <section class="p-2 gap-2 w-full h-full flex flex-col justify-end text-white">
+      
+        <article key={i} class="p-2 w-fit border-2 border-white rounded-lg">
+        </article>
+      
+    </section>
+    
+    <section class="flex p-2 gap-2 w-full h-fit">
+      <input class="p-2 px-4 w-full border-2 bg-slate-950 border-white rounded-lg"></input>
+      <button onclick="connect()" class="p-2 px-4 w-fit border-2 border-white rounded-lg text-white">Connect</button>
+      <button onclick="leave()" class="p-2 px-4 w-fit border-2 border-white rounded-lg text-white">leave</button>
+      <button onclick="join()" class="p-2 px-4 w-fit border-2 border-white rounded-lg text-white">join</button>
+      <button onclick="send()" class="p-2 px-4 w-fit border-2 border-white rounded-lg text-white">send</button>
+    </section>
+
+  </main>
+  <script src='./app.js'></script>
+  <!-- <script src='app.js'></script> -->
+</body>
+</html>

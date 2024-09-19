@@ -1,5 +1,5 @@
 {
-    "name": "gab-h3nrique",
+    "name": "pulsar-socket",
     "version": "1.0.1",
     "description": "Pulsar Client & Server Library",
     "main": "index.js",

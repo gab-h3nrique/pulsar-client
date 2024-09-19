@@ -18,7 +18,7 @@ import pulsar from '.pulsar.js';
 To create a new instance of socketCore, pass the URL of the WebSocket server:
 
 ```javascript
-const socket = pulsar('ws://you-link', 'token');
+const socket = pulsar('ws://your-link', 'your-token');
 ```
 ## Registering Event Handlers
 You can register event handlers for different types of received messages:

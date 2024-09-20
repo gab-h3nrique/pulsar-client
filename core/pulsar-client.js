@@ -1,4 +1,4 @@
-export function client(urlParam, tokenParam) {
+export function factory(urlParam, tokenParam) {
     "use strict";
 
     // base url for connection

@@ -10,6 +10,11 @@ export function factory(urlParam, tokenParam) {
     // socket instance
     let socket
 
+    // stores the callback to execute socket.on(..,()=> console.log('hello'))
+    let handler = {}
+
+    let currentChannel = ''
+
     function connect() {
 
         try {
@@ -40,19 +45,6 @@ export function factory(urlParam, tokenParam) {
 
     connect()
 
-    socket.headers = null
-
-    // name of the event to run socket.on('NAME', ..)
-    // this.handler.NAME
-
-    // stores the callback to execute socket.on(..,()=> console.log('hello'))
-    // this.handler.NAME = () => console.log('hello')
-
-    // { 'edited-list': (item) => setEditedList(item)  }
-    let handler = {}
-
-    let currentChannel = ''
-
     function auth() {
 
         const event = '__auth'
@@ -64,7 +56,6 @@ export function factory(urlParam, tokenParam) {
         return socket.send(STRINGIFIED)
 
     }
-
 
     socket.addEventListener('open', sk => {
 
@@ -108,6 +99,8 @@ export function factory(urlParam, tokenParam) {
 
     function emit(event, payload) {
 
+        this.reconnect()
+
         const STRINGIFIED = JSON.stringify({ event, payload, channel: this.currentChannel })
 
         return socket.send(STRINGIFIED)
@@ -141,6 +134,12 @@ export function factory(urlParam, tokenParam) {
 
     }
 
-    return { url, token, on, emit, channel, join, leave }
+    function close() {
+
+        socket.close()
+
+    }
+
+    return { url, token, on, emit, channel, join, leave, connect, close }
 
 }

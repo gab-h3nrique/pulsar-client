@@ -10,15 +10,15 @@ Add the library to your JavaScript project:
 
 Or, if you're using a bundler like Webpack or Rollup, import it directly:
 ```javascript
-import pulsar from '.pulsar.js';
+import Pulsar from 'pulsar-socket';
 ```
 
 # Basic Usage
 ## Creating an Instance
-To create a new instance of socketCore, pass the URL of the WebSocket server:
+To create a new instance of Pulsar, pass the URL of the WebSocket server:
 
 ```javascript
-const socket = pulsar('ws://your-link', 'your-token');
+const socket = Pulsar('ws://your-link', 'your-token');
 ```
 ## Registering Event Handlers
 You can register event handlers for different types of received messages:

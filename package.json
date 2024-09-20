@@ -1,8 +1,9 @@
 {
     "name": "pulsar-socket",
-    "version": "1.0.111",
+    "version": "1.0.112",
     "description": "Pulsar Client & Server Library",
     "main": "index.js",
+    "types": "./index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },

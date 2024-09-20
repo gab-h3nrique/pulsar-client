@@ -53,3 +53,5 @@ socket.channel('chat').leave();
 
 # License
 Distributed under the MIT license. See LICENSE for more details.
+
+console

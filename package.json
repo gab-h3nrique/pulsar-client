@@ -1,6 +1,6 @@
 {
     "name": "pulsar-socket",
-    "version": "1.0.11",
+    "version": "1.0.111",
     "description": "Pulsar Client & Server Library",
     "main": "index.js",
     "scripts": {

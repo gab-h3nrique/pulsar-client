@@ -15,6 +15,8 @@ export function factory(urlParam, tokenParam) {
 
     let currentChannel = ''
 
+    let interval = setInterval(reconnect, 5000);
+
     function connect() {
 
         try {
@@ -23,7 +25,7 @@ export function factory(urlParam, tokenParam) {
     
             socket = new WebSocket(url || '')
 
-            setTimeout(reconnect, 3000);
+            // setTimeout(reconnect, 3000);
 
             return
 
@@ -137,6 +139,8 @@ export function factory(urlParam, tokenParam) {
     function close() {
 
         socket.close()
+
+        clearInterval(interval)
 
     }
 

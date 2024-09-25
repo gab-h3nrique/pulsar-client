@@ -22,14 +22,46 @@ export function factory(urlParam, tokenParam) {
         try {
             
             console.log('Connecting socket...')
-    
+
             socket = new WebSocket(url || '')
 
-            // setTimeout(reconnect, 3000);
+            socket.addEventListener('open', sk => {
+
+                auth()
+
+            })
+
+            socket.addEventListener('message', ev => {
+
+                console.log('bateu aqui...')
+
+                const PARSED = JSON.parse(ev.data);
+
+                const { event, payload } = PARSED;
+
+                if(event == 'ping') return respondPing()
+
+                if(!handler[event]) return
+
+                handler[event](payload)
+
+                return
+
+            })
+
+            socket.addEventListener('error', err => {
+
+                console.log('Some error happened')
+
+                socket.close()
+
+            })
 
             return
 
         } catch (error) {
+
+            if(socket) socket.close()
 
             return
             
@@ -59,38 +91,6 @@ export function factory(urlParam, tokenParam) {
 
     }
 
-    socket.addEventListener('open', sk => {
-
-        auth()
-
-    })
-
-    socket.addEventListener('message', ev => {
-
-        const PARSED = JSON.parse(ev.data);
-
-        const { event, payload } = PARSED;
-
-        if(event == 'ping') return respondPing()
-
-        if(!handler[event]) return
-
-        handler[event](payload)
-
-        return
-
-    })
-
-    socket.addEventListener('error', err => {
-
-        console.log('Some error happened')
-
-        socket.close()
-
-    })
-
-
-
     function on(event, fn) {
 
         // event =  'CLICK'
@@ -100,8 +100,6 @@ export function factory(urlParam, tokenParam) {
     }
 
     function emit(event, payload) {
-
-        reconnect()
 
         const STRINGIFIED = JSON.stringify({ event, payload, channel: this.currentChannel })
 

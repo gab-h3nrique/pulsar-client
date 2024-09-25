@@ -101,7 +101,7 @@ export function factory(urlParam, tokenParam) {
 
     function emit(event, payload) {
 
-        this.reconnect()
+        reconnect()
 
         const STRINGIFIED = JSON.stringify({ event, payload, channel: this.currentChannel })
 

@@ -33,8 +33,6 @@ export function factory(urlParam, tokenParam) {
 
             socket.addEventListener('message', ev => {
 
-                console.log('bateu aqui...')
-
                 const PARSED = JSON.parse(ev.data);
 
                 const { event, payload } = PARSED;

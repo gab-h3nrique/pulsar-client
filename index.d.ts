@@ -113,7 +113,7 @@ interface Client {
     * ```
     * 
     */
-    emit(event: string, payload: any, channel?: string): void;
+    emit(event: string, payload: any): void;
     /*
     *
     * Sets the current channel for communication. All subsequent emits 

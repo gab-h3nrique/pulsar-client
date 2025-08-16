@@ -18,7 +18,7 @@ import Pulsar from 'pulsar-socket';
 To create a new instance of Pulsar, pass the URL of the WebSocket server:
 
 ```javascript
-const socket = Pulsar('ws://your-link', 'your-token');
+const socket = Pulsar('wss://pulsar-socket', 'your-token');
 ```
 ## Registering Event Handlers
 You can register event handlers for different types of received messages:

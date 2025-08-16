@@ -1,4 +1,5 @@
 "use strict";
+
 function factory(urlParam, tokenParam) {
 
     // base url for connection
@@ -29,7 +30,7 @@ function factory(urlParam, tokenParam) {
 
         console.log('🔵 Connecting socket...')
 
-        socket = new WebSocket(url)
+        socket = new WebSocket(`${url}?token=${token}`)
 
         socket.addEventListener('open', () => {
 
@@ -117,7 +118,11 @@ function factory(urlParam, tokenParam) {
 
     function emit(event, payload) {
 
-        const STRINGIFIED = JSON.stringify({ event, payload, channel: this.currentChannel })
+        console.log('this.currentChannel: ', currentChannel)
+
+        const STRINGIFIED = JSON.stringify({ event, payload, channel: currentChannel })
+
+        currentChannel = null
 
         return socket.send(STRINGIFIED)
 
@@ -125,21 +130,23 @@ function factory(urlParam, tokenParam) {
 
     function channel(value) {
 
-        this.currentChannel = value
+        currentChannel = value
 
-        return this
+        return { emit, join, leave, on }
 
     }
 
     function join() {
 
-        this.emit('__join', { channel: this.currentChannel })
+        emit('__join', { channel: currentChannel })
 
     }
 
     function leave() {
 
-        this.emit('__leave', { channel: this.currentChannel })
+        emit('__leave', { channel: currentChannel })
+
+        currentChannel = ''
         
     }
 

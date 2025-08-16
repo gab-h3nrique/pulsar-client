@@ -15,55 +15,69 @@ export function factory(urlParam, tokenParam) {
 
     let currentChannel = ''
 
-    let interval = setInterval(reconnect, 5000);
+    let interval = null;
+
+    let status = 'disconnected' // disconnected | connecting | connected
+
+    // let interval = setInterval(reconnect, 5000)
 
     function connect() {
 
-        try {
-            
-            console.log('Connecting socket...')
+        if(status === 'connecting' || status === 'connected') return
 
-            socket = new WebSocket(url || '')
+        status = 'connecting'
 
-            socket.addEventListener('open', sk => {
+        console.log('🔵 Connecting socket...')
 
-                auth()
+        socket = new WebSocket(url)
 
-            })
+        socket.addEventListener('open', () => {
 
-            socket.addEventListener('message', ev => {
+            console.log('🟢 Connected socket...')
 
-                const PARSED = JSON.parse(ev.data);
-
-                const { event, payload } = PARSED;
-
-                if(event == 'ping') return respondPing()
-
-                if(!handler[event]) return
-
-                handler[event](payload)
-
-                return
-
-            })
-
-            socket.addEventListener('error', err => {
-
-                console.log('Some error happened')
-
-                socket.close()
-
-            })
+            status = 'connected'
 
             return
 
-        } catch (error) {
+        })
 
-            if(socket) socket.close()
+        socket.addEventListener('close', () => {
+
+            socket.close()
+
+            status = 'disconnected'
 
             return
-            
-        }
+
+        })
+
+        socket.addEventListener('error', err => {
+
+            console.log('❌ Socket error, closing...')
+
+            // socket.close()
+
+            return
+
+        })
+
+        socket.addEventListener('message', ev => {
+
+            const PARSED = JSON.parse(ev.data)
+
+            const { event, payload } = PARSED
+
+            if(event == 'ping') return pong()
+
+            if(!handler[event]) return
+
+            handler[event](payload)
+
+            return
+
+        })
+
+        return
 
     }
 
@@ -71,23 +85,27 @@ export function factory(urlParam, tokenParam) {
 
         if(socket && socket.readyState == 1) return
 
+        if (status === 'connected' || status === 'connecting') return
+
         connect()
 
     }
 
+    interval = setInterval(reconnect, 5000)
+
     connect()
 
-    function auth() {
+    // function auth() {
 
-        const event = '__auth'
+    //     const event = '__auth'
 
-        const payload = { token: token }
+    //     const payload = { token: token }
 
-        const STRINGIFIED = JSON.stringify({ event, payload })
+    //     const STRINGIFIED = JSON.stringify({ event, payload })
 
-        return socket.send(STRINGIFIED)
+    //     return socket.send(STRINGIFIED)
 
-    }
+    // }
 
     function on(event, fn) {
 
@@ -126,9 +144,16 @@ export function factory(urlParam, tokenParam) {
     }
 
     // unnecessary
-    function respondPing() {
+    function pong() {
 
-        this.emit('__pong', null)
+        if(!socket || socket.readyState !== 1) return
+
+        if(status !== 'connecting' || status !== 'connected') return
+
+        // 0x8A = FIN + opcode pong
+        const pongFrame = new Uint8Array([0x8A, 0x00]);
+
+        socket.send(pongFrame.buffer); // ou socket.send(pongFrame) dependendo do ambiente
 
     }
 

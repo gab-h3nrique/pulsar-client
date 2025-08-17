@@ -118,8 +118,6 @@ export function factory(urlParam, tokenParam) {
 
     function emit(event, payload) {
 
-        console.log('this.currentChannel: ', currentChannel)
-
         const STRINGIFIED = JSON.stringify({ event, payload, channel: currentChannel })
 
         currentChannel = null
